@@ -58,7 +58,8 @@ tak_folder () {
 	if [ -d "./tak" ] 
 	then
 	    printf $warning "\nDirectory 'tak' already exists. This will be removed along with the docker volume, do you want to continue? (y/n): "
-	    read dirc
+	    # read dirc
+		dirc="y" # Forcing this for OHMR purposes
 	    if [ $dirc == "n" ];
 	    then
 	    	printf "Exiting now.."
@@ -247,10 +248,12 @@ sed -i "s/MemTotal/MemFree/g" tak/setenv.sh
 
 ## Set variables for generating CA and client certs
 printf $warning "SSL setup. Hit enter (x3) to accept the defaults:\n"
-read -p "State (for cert generation). Default [state] :" state
-read -p "City (for cert generation). Default [city]:" city
-read -p "Organizational Unit (for cert generation). Default [org]:" orgunit
-
+# read -p "State (for cert generation). Default [state] :" state
+# read -p "City (for cert generation). Default [city]:" city
+# read -p "Organizational Unit (for cert generation). Default [org]:" orgunit
+state="OH"
+city="Columbus"
+org="OHMR"
 if [ -z "$state" ];
 then
 	state="state"
