@@ -295,17 +295,17 @@ while :
 do
 	sleep 10 # let the PG stderr messages conclude...
 	printf $warning "------------CERTIFICATE GENERATION--------------\n"
-	$DOCKER_COMPOSE exec tak bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name CRFtakserver"
+	$DOCKER_COMPOSE exec -T tak bash -c "cd /opt/tak/certs && ./makeRootCa.sh --ca-name CRFtakserver"
 	if [ $? -eq 0 ];
 	then
-		$DOCKER_COMPOSE exec tak bash -c "cd /opt/tak/certs && ./makeCert.sh server $IP"
+		$DOCKER_COMPOSE exec -T tak bash -c "cd /opt/tak/certs && ./makeCert.sh server $IP"
 		if [ $? -eq 0 ];
 		then
-			$DOCKER_COMPOSE exec tak bash -c "cd /opt/tak/certs && ./makeCert.sh client $user"	
+			$DOCKER_COMPOSE exec -T tak bash -c "cd /opt/tak/certs && ./makeCert.sh client $user"	
 			if [ $? -eq 0 ];
 			then
 				# Set permissions so user can write to certs/files
-				$DOCKER_COMPOSE exec tak bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
+				$DOCKER_COMPOSE exec -T tak bash -c "useradd $USER && chown -R $USER:$USER /opt/tak/certs/"
 				$DOCKER_COMPOSE stop tak
 				break
 			else 
@@ -338,13 +338,13 @@ sleep 10
 while :
 do
 	sleep 10
-	$DOCKER_COMPOSE exec tak bash -c "cd /opt/tak/ && java -jar /opt/tak/utils/UserManager.jar usermod -A -p $password $user"
+	$DOCKER_COMPOSE exec -T tak bash -c "cd /opt/tak/ && java -jar /opt/tak/utils/UserManager.jar usermod -A -p $password $user"
 	if [ $? -eq 0 ];
 	then
-		$DOCKER_COMPOSE exec tak bash -c "cd /opt/tak/ && java -jar utils/UserManager.jar certmod -A certs/files/$user.pem"
+		$DOCKER_COMPOSE exec -T tak bash -c "cd /opt/tak/ && java -jar utils/UserManager.jar certmod -A certs/files/$user.pem"
 		if [ $? -eq 0 ]; 
 		then
-			$DOCKER_COMPOSE exec tak bash -c "java -jar /opt/tak/db-utils/SchemaManager.jar upgrade"
+			$DOCKER_COMPOSE exec -T tak bash -c "java -jar /opt/tak/db-utils/SchemaManager.jar upgrade"
 			if [ $? -eq 0 ];
 			then
 
