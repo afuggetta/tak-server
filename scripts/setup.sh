@@ -79,7 +79,6 @@ tak_folder () {
 
 
 checksum () {
-	wget -o "/home/takuser/tak-server/takserver-docker-4.8-RELEASE-31.zip" "https://ohmr-tak.nyc3.digitaloceanspaces.com/takserver-docker-4.8-RELEASE-31.zip"
 	printf "\nChecking for TAK server release files (..RELEASE.zip) in the directory....\n"
 	sleep 1
 
