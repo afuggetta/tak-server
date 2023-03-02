@@ -229,12 +229,7 @@ pgpwd="$(cat /dev/urandom | tr -dc '[:alpha:][:digit:]' | fold -w ${1:-11} | hea
 pgpassword=$pgpwd"Meh1!"
 
 # get IP
-NIC=$(route | grep default | awk '{print $8}')
-if [ ! -z $1 ]; then
-  IP=$1
-else
-  IP=$(ip addr show $NIC | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
-fi
+IP=$(ip addr | grep "ztpp" | grep -m 1 "inet " | awk '{print $2}' | cut -d "/" -f1)
 
 printf $info "\nProceeding with IP address: $IP\n"
 sed -i "s/password=\".*\"/password=\"${pgpassword}\"/" tak/CoreConfig.xml
